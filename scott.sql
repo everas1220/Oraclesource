@@ -24,5 +24,3 @@ SELECT * FROM EMP e;
 
 
 
-
-
