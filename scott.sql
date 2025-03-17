@@ -22,5 +22,8 @@
 -- 사원정보조회
 SELECT * FROM EMP e;
 
+-- 특정열 조회
+SELECT e.EMPNO, e.ENAME, e.JOB FROM EMP e;
 
-
+-- 사원번호, 부서번호만 조회
+SELECT e.EMPNO, e.DEPTNO FROM EMP e;
