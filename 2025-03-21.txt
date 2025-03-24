@@ -1,0 +1,87 @@
+git
+ -소스, 버전관리
+ -리눅스,창시자 리누스토발즈가 개발함
+ -git 설치 : 사용자 설정 
+  git config -- global user.name "이름"
+  git config -- global user.email "이메일주소"
+
+ -git 명령어 
+ 1) git config --list : config 설정확인
+ 2) git init
+ 3) git status
+ 4) git add 파일명 
+ 5) git commit -m "hello.txt 파일 생성"
+ 6) git loh --graph
+ 7) git restore 파일명 // 수정본에 다한 제거 모디파이드 상태였던 파일 로컬 저장소로 보냄
+ 8) git commit -- amend : 직전 커밋을 취소시킴
+
+버전관리 도구 - git, svn(sebversion)
+
+git 동작방식
+ -시간순으로 프로젝트의 스냅샷 저장 : commit 
+  -달라진 부분만 저장
+-git 영역 
+ 1) working 디렉토리 : git init 명령이 수행된 디렉토리 
+	-새파일 작성(Untracked file):버전관리 원한다면 staging 영역으로 보내야함
+ 2) staging : 
+ 	-git commit -m "hello.txt 파일생성":로컬 저장소에 저장
+ 3) repository :
+	
+
+-- git 파일 상태 
+ -1) Untracked 
+ -2) Unmodified
+ -3) modified
+   - git add 파일명
+   - git restore 파일명
+	 아래 명령어는 modified일때만 가능 
+   - git commit -a -m "커밋메세지" : add + commit 동시에 처리 
+ -4) staged
+       1) git rm --cached 파일명 : Untracked 상황
+       2) git restore -- staged 파일명 : Untracked 상황
+ -5).gitignore : git에서 관리 대상이 아닌 파일 작성
+	       프로잭투 초번에 하기 				
+	-기존에 관리대상이였던 파일을 나중에 .gitignore 추가시 관리대상에서 제외시켜주지않음
+	git rm 
+
+ -6) git diff : modified 인 파일과 로컬 저장소에 있는 파일과 비교 
+     git diff -- staged : staged인 파일과 로컬 저장소에 있는 파일과 비교 
+
+
+git branch
+ 기본 브랸차명 : 예전에는 master를 주로 사용 했지만 
+                     현재는 main사용
+
+git branch -m master main : 브랜치명 변경 (master -> main)
+
+기본 브랜치는 놔두고 새로운 브랜치에서 특정 작성 수행
+브랜치별로 관리 가능 
+main 브랜치 + 새로운 브랜치 작업 merge 가능 
+팀작업 
+
+
+git branch 브랜치명 : 브랜치 생성
+git branch  : 브랜치 확인
+git checkout 브랜치명 : 브랜치 이동
+	- 가장 처음 실행될떄는 main 브랜치 내용 복사 + 이동
+	- 두번째 부터는 이동 
+
+git merge 브랜치명(합칠 브랜치명)
+
+원격(remote) 저장소 
+ -github, gitlab
+
+ -github 리포지토리 생성
+ - 원격저장소와 로컬저장소 연동
+ 
+
+ -git remote -v : 로컬에서 원격 저장소 확인
+ -git push -u origin main : main commit을 원격저장소와 동기화
+ -git fetch 원격저장소명 : 원격저장소와 main을 동기화시키기 위해 포인터 가져오기
+ -git merge origin : 원격저장소와 main을동기화
+
+ - git pull : fetch + merge 한 번에 처리
+
+
+ - clone : 복제
+	본인,타인-작성,복제 가능
