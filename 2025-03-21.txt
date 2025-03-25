@@ -85,3 +85,19 @@ git merge 브랜치명(합칠 브랜치명)
 
  - clone : 복제
 	본인,타인-작성,복제 가능
+
+
+1.로컬커밋
+2. push(git허브동기화)
+ -1)git add src/파일명
+ -2)git commit -m "프로젝트명"
+ -3)git pull origin
+ -4)git push
+
+
+
+
+자바 + 데이터베이스 연동프로그램
+-JDBC 
+-ojdbc11.jar
+

@@ -6,10 +6,6 @@
  --문자열 일부를 추출하는 함수
 
 
-
-
-
-
 --LPAD(데이터, 데이터 자릿수, 채울문자)
 --RPAD(데이터, 데이터 자릿수, 채울문자)
 
@@ -678,6 +674,186 @@ WHERE
 		E.LOB = 'SALESMAN')
 ORDER BY
 	E.EMPNO;
+
+-- C(insert) : 삽입
+
+--INSERT INTO 테이블명(필드명,필드명,....)
+--value(값1,값2...)
+
+-- 기존 테이블 복사 
+CREATE TABLE dept_temp AS SELECT * FROM dept;
+
+INSERT INTO DEPT_TEMP(deptno, dname, loc)
+VALUES(50,'DATABASE','SEOUL');
+
+
+INSERT INTO DEPT_TEMP
+VALUES(60,'NETWORK','BUSAN');
+
+
+INSERT INTO DEPT_TEMP
+VALUES(60,'NETWORK','BUSAN');
+
+--값의 수가 너무 많습니다
+--값의 수가 충분하지 않습니다
+INSERT INTO DEPT_TEMP(deptno, dname, loc)
+VALUES('NETWORK','BUSAN');
+
+--이 열에 대해 지정된 전체 자릿수보다 큰 값이 허용됩니다.
+--Number(2,0)
+INSERT INTO DEPT_TEMP
+VALUES(600,'NETWORK','BUSAN');
+
+-- null 
+INSERT INTO DEPT_TEMP
+VALUES(80,'NETWORK',null);
+
+INSERT INTO DEPT_TEMP(deptno, dname)
+VALUES(90,'NETWORK');
+
+-- 열구조만 복사후 새테이블 생성
+CREATE TABLE EMP_TEMP AS SELECT * FROM emp WHERE 1<>1;
+
+-- 날짜데이터 삽입 : 'YYYY/MM/DD'
+INSERT INTO EMP_TEMP(empno, DNAME, lob,mgr,HIREDATE,sal,COMM,deptno)
+VALUES(9999,'홍길동','PRESIDENT', NULL,'2020-12-13',5000,1000,10);
+
+INSERT INTO EMP_TEMP(empno, DNAME, lob,mgr,HIREDATE,sal,COMM,deptno)
+VALUES(3111,'이춘향','MANAGER',9999,sysdate,4000,NULL,30);
+
+-- emp, salgrade 급여등급이 1인 사원들만 emp_temp 추가하기
+
+SELECT INTO EMP_TEMP(empno, DNAME, lob, mgr, HIREDATE, sal, COMm, deptno)
+SELECT e.* FROM emp e JOIN salgreade
+
+-- u(Update)
+-- update 테이블명
+-- set 변경할 열 = 값, 변경할열=값....
+-- where(선택)데이터를 변경할대상행을 선별하는 조건나열 
+
+--90번 부서의 loc SEOUL 변경
+UPDATE DEPT_TEMP
+SET LOC ='SEOUL'
+WHERE DEPTNO = 90;
+
+UPDATE DEPT_TEMP
+SET LOC ='SEOUL'
+
+--COMMIT;
+--ROLLBACK
+
+-- 40번 부서의 부서명 변경
+-- dept 테이블 40번 부서랑 동일 
+UPDATE DEPT_TEMP 
+SET (dname, LOC) = (SELECT dname, loc FROM DEPT WHERE deptno =40)
+WHERE DEPTNO = 40;
+
+
+
+--50번 부서의 dname,loc 변경
+UPDATE DEPT_TEMP
+SET LOC = 'BUSAN', DNAME='SALES'
+WHERE DEPTNO = 50;
+
+-- Delete : 삭제
+-- DELETE FROM 테이블명
+-- WHERE 삭제할조건
+
+-- DELETE 테이블명
+-- WHERE 삭제할조건
+
+
+--70번 부서 삭제
+DELETE FROM DEPT_TEMP
+WHERE deptno = 70;
+
+--loc가 SEOUL 데이터 삭제 
+DELETE DEPT_TEMP
+WHERE LOC = 'SEOUL';
+
+DELETE EMP_TEMP
+WHERE SAL >= 3000;
+
+DELETE EMP_TEMP;
+
+CREATE TABLE EXAM_EMP AS SELECT * FROM EMP;
+CREATE TABLE EXAM_DEPT AS SELECT * FROM DEPT;
+CREATE TABLE EXAM_SALGRADE AS SELECT * FROM SALGRADE;
+
+-- DEPT 테이블에 다음 데이터를 삽입하기
+-- 50, ORACLE, BUSAN
+-- 60, SQL, ILSAN
+-- 70 , SELECT, INCHEON
+-- 80, DML, BUNDANG
+
+
+-- EXAM_EMP 테이블에 다음 데이터 삽입하기
+-- 7201, USER1, MANEGER, 7788 , 2016-02-01, 4500, NULL,50
+-- 7201, USER2, CLERK, 7201 , 2016-02-16, 1800, NULL,50
+-- 7201, USER1, ANALYST, 7201 , 2016-04-11, 3400, NULL,60
+-- 7201, USER1, SALESMAN, 7788 , 2016-05-31, 2700, 300, 60
+-- 7201, USER1, CLERK, 7201 , 2016-07-20, 2600, NULL,70
+-- 7201, USER1, CLERK, 7201 , 2016-09-08, 2600, NULL,70
+-- 7201, USER1, LECTURER, 7201 , 2016-10-28, 2300, NULL,80
+-- 7201, USER1, STUDENT, 7201 , 2018-03-09, 1200, NULL,80
+
+--EXAM_EMP 에서 50번 부서에서 근무하는 사원의 평균급여보다 많이 받는 사원을 
+--70번 부서로 옮기는 SQL 구문 작성
+
+
+--EXAM_EMP 에서 입사일이 가장 빠른 60번 부서사원보다 늦게 입사한 사원의
+--급여를 10%인상하고 80번 부서로 옮기는 sql 구문작성
+
+--EXAM_EMP 에서 급여등급이 5인 사원을 삭제하는 SQL 구문작성
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

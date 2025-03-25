@@ -15,7 +15,7 @@
 --SALGRADE(급여테이블)
 --grade(급여등급), losal(최저급여), hisal(최대급여)
 
--- 개발자들 : CR(Read)UD
+-- 개발자들 : C(insert)R(Read)U(Update)D(Delete)
 -- SQL(Structured Query Language : 구조질의언어) : RDNMS 데이터를 다루는 언어 
 
 -- 1. 조회(SELECT)-Read
