@@ -785,30 +785,232 @@ CREATE TABLE EXAM_SALGRADE AS SELECT * FROM SALGRADE;
 -- 60, SQL, ILSAN
 -- 70 , SELECT, INCHEON
 -- 80, DML, BUNDANG
+INSERT INTO EXAM_DEPT(DEPTNO, DNAME,loc)
+values(50,'oracle','busan');
 
 
 -- EXAM_EMP 테이블에 다음 데이터 삽입하기
 -- 7201, USER1, MANEGER, 7788 , 2016-02-01, 4500, NULL,50
 -- 7201, USER2, CLERK, 7201 , 2016-02-16, 1800, NULL,50
--- 7201, USER1, ANALYST, 7201 , 2016-04-11, 3400, NULL,60
--- 7201, USER1, SALESMAN, 7788 , 2016-05-31, 2700, 300, 60
--- 7201, USER1, CLERK, 7201 , 2016-07-20, 2600, NULL,70
--- 7201, USER1, CLERK, 7201 , 2016-09-08, 2600, NULL,70
--- 7201, USER1, LECTURER, 7201 , 2016-10-28, 2300, NULL,80
--- 7201, USER1, STUDENT, 7201 , 2018-03-09, 1200, NULL,80
+-- 7201, USER3, ANALYST, 7201 , 2016-04-11, 3400, NULL,60
+-- 7201, USER4, SALESMAN, 7788 , 2016-05-31, 2700, 300, 60
+-- 7201, USER5, CLERK, 7201 , 2016-07-20, 2600, NULL,70
+-- 7201, USER6, CLERK, 7201 , 2016-09-08, 2600, NULL,70
+-- 7201, USER7, LECTURER, 7201 , 2016-10-28, 2300, NULL,80
+-- 7201, USER8, STUDENT, 7201 , 2018-03-09, 1200, NULL,80
 
+INSERT INTO EXAM_EMP 
+values(7201,'USER1','MANAGER', 7788, 2016-02-01, 4500, NULL, 50);
 
 
 
 
 --EXAM_EMP 에서 50번 부서에서 근무하는 사원의 평균급여보다 많이 받는 사원을 
 --70번 부서로 옮기는 SQL 구문 작성
-
+UPDATE EXAM_EMP 
+SET DEPTNO=70
+WHERE sal >(SELECT avg(sal) FROM EXAM_EMP WHERE deptno =50);
 
 --EXAM_EMP 에서 입사일이 가장 빠른 60번 부서사원보다 늦게 입사한 사원의
 --급여를 10%인상하고 80번 부서로 옮기는 sql 구문작성
+UPDATE EXAM_EMP 
+SET sal = sal *1.1, DEPTNO=80
+WHERE hiredate >(SELECT min(hiredate) FROM EXAM_EMP WHERE deptno =60);
+
+
 
 --EXAM_EMP 에서 급여등급이 5인 사원을 삭제하는 SQL 구문작성
+DELETE
+FROM
+	EXAM_EMP
+WHERE
+	empno IN (
+	SELECT
+		empno
+	FROM
+		exam_emp e
+	JOIN EXAM_SALGRADE s ON
+		e.sal BETWEEN s.losal AND s.HISAL
+		AND s.grade = 5);
+
+-- 트랜잭션 : ALL or NOTHING (전부실행 OR 전부취소)
+-- DML(데이터 조작어) - INSERT, UPDATE, DELETE
+
+-- COMMIT(전부실행) /ROLLBACK (전부취소)
+INSERT INTO DEPT_TEMP VALUES(30,'DATABASE', 'SEOUL');
+UPDATE DEPT_TEMP set loc = 'busan' WHERE deptno=30;
+DELETE FROM DEPT_TEMP WHERE Dname = 'research';
+
+COMMIT;
+
+ROLLBACK;
+
+--세션 : 데이터베이스 접속후 작업을 수행한 후 접속을 종료하는 전체기간
+
+SELECT * FROM EMP e;
+
+DELETE FROM DEPT_TEMP WHERE DEPTNO=30;
+
+COMMIT;
+
+
+--DDL(데이터 정의어) : 객체를 생성,변경,삭제
+-- 1. 테이블 생성 : CREATE
+-- 2.      변경 : ALTER
+-- 3.      삭제 : DROP
+-- 4. 테이블 전체 데이터 삭제 : TRUNCATE
+-- 5. 테이블 이름 변경 : RENAME
+
+--CREATE TABLE 테이블명(
+--	컬럼명1 자료형,
+--	컬럼명2 자료형,
+--	컬럼명3 자료형,
+--)
+
+--테이블명 규칙
+--문자로 시작(영문, 한글, 숫자 가능)
+--테이블 이름은 30바이트 이하
+--같은 사용자 안에서는 테이블명 중복불가
+--SQL 예약어(SELECT,FROM...등등)는 테이블 이름으로 사용할 수 없음
+
+-- VARCHAR2(14) : 영어14문자, 한글 4문자
+-- NUMBER(7,2) : 전체자리수 7(소숫점2자리 포함) 
+
+CREATE TABLE DEPT_DDL(
+	DEPTNO NUMBER(2,0),
+	DNAME VARCHAR2(14),
+	LOC VARCHAR2(13)
+);
+
+CREATE TABLE EMP_DDL(
+	EMPNO NUMBER(4,0),
+	DNAME VARCHAR2(14),
+	LOB VARCHAR2(9),
+	MGR NUMBER(4,0),
+	HIREDATE DATE,
+	SAL NUMBER(7,2),
+	COMM NUMBER(7,2),
+	DEPTNO NUMBER(2,0)
+);
+
+-- 기존 테이블 구조와 데이터를 이용한 새테이블 생성
+CREATE TABLE EXAM_EMP AS SELECT * FROM EMP;
+
+-- 기존 테이블 구조만 이용한 새테이블 생성
+CREATE TABLE EXAM_EMP AS SELECT * FROM EMP WHERE 1<>1;
+
+-- ALTER : 테이블 변경
+-- 1) 열추가 
+-- 2) 열 이름 변경
+-- 3) 열 자료형 변경
+-- 4) 특정 열 삭제
+
+--HP 열 추가 
+ALTER TABLE EMP_DDL ADD HP VARCHAR2(20);
+
+--HP => TEL 변경
+ALTER TABLE EMP_DDL RENAME COLUMN HP TO TEL;
+
+--EMPNO 자리수 4 => 5
+ALTER TABLE EMP_DDL MODIFY EMPNO NUMBER(5);
+
+ALTER TABLE EMP_DDL MODIFY DNAME VARCHAR2(8);
+ALTER TABLE EMP_DDL MODIFY EMPNO NUMBER(3);
+
+--정도 또는 자리수를 축소할 열은 비어 있어야 합니다
+--ALTER TABLE EMP_TEMP MODIFY EMPNO NUMBER(3);
+
+-- 특정 열 삭제 
+ALTER TABLE EMP_DDL DROP COLUMN TEL;
+
+-- 테이블 이름 변경
+RENAME EMP_DDL TO EMP_RENAME;
+
+-- 테이블 데이터 삭제 
+-- DELECT FROM EMP_RENAME
+
+--ROLLBACK 안됨
+TRUNCATE TABLE EMP_RENAME;
+
+-- 테이블 제거 
+DROP TABLE EMP_RENAME;
+
+
+--MEMBER 테이블 생성하기
+--ID VARCHAR2(8) /name 10 // addr(varchar2) 50/ email 30 / age number(4)
+
+CREATE TABLE MEMBER_TABLE(
+	ID VARCHAR2(8),
+	name VARCHAR2(10),
+	addr varchar2(50),
+	email VARCHAR2(30),
+	AgeNumber NUMBER(4)
+);
+
+
+--member 테이블 열추가
+--bigo 열 추가(문자열,20)
+ALTER TABLE MEMBER_TABLE ADD bigo VARCHAR2(20);
+
+--bigo 열 크기를 30으로 변경
+ALTER TABLE MEMBER_TABLE MODIFY bigo varchar2(30);
+
+--bigo 열 이름을 remark로 변경
+ALTER TABLE MEMBER_TABLE RENAME COLUMN BIGO TO REMARK;
+
+--오라클 객체 
+--오라클 데이터베이스 테이블
+--1) 사용자 테이블
+--2) 데이터 사전 - 중요한 데이터(사용자,권한,메모리,성능...) : 일반 사용자가 접근하는곳이 아님
+--		user_*,all_*,dba_,v$_*
+-- 2.인덱스 : 검색을 빠르게 처리
+--		1) FULL SCAN
+--		2) INDEX SCAN
+-- 3. view : 가상 테이블
+--		 믈리적으로 저장된 테이블은 아님
+
+SELECT * FROM dict;
+
+--scott 계정이 가진 table 조회
+SELECT table_name
+FROM user_tables;
+
+
+-- 인덱스 조회 
+SELECT * FROM USER_INDEXES;
+
+--인덱스 생성
+--CREATE INDEX 인덱스명 ON 테이블명(열이름 ASC OR DESC, 열이름..)
+
+CREATE INDEX IDX_EMP_TEMP_SAL ON EMP_TEMP(SAL);
+
+--인덱스 삭제 
+DROP INDEX IDX_EMP_TEMP_SAL;
+
+
+SELECT * FROM EMP e;
+
+-- 뷰
+-- 권한을 가진 사용자만 생성 가능
+-- 보안성 : 특정 열을 노출하고 싶지않을때 
+-- 편리성 : select 문의 복잡도 완화 
+--CREATE VIEW 뷰이름(열이름1, 열이름2...) AS (저장할 SELECT 구문)
+
+CREATE VIEW vw_emp20 AS (
+SELECT
+	e.empno,
+	e.DNAME,
+	e.LOB,
+	e.DEPTNO
+FROM
+	emp e
+WHERE
+	e.DEPTNO = 20);
+
+
+
+
+
 
 
 
