@@ -943,29 +943,50 @@ DROP TABLE EMP_RENAME;
 
 
 --MEMBER 테이블 생성하기
---ID VARCHAR2(8) /name 10 // addr(varchar2) 50/ email 30 / age number(4)
+--ID VARCHAR2(8) pk/name 10 not null// addr(varchar2) 50/ email 30 not null/ age number(4)
 
-CREATE TABLE MEMBER_TABLE(
-	ID VARCHAR2(8),
-	name VARCHAR2(10),
+CREATE TABLE MEMBER(
+	NO number(8) UNIQUE,
+	ID VARCHAR2(8) PRIMARY key,
+	name VARCHAR2(10)NOT null,
 	addr varchar2(50),
-	email VARCHAR2(30),
-	AgeNumber NUMBER(4)
+	email VARCHAR2(30)NOT null,
+	Age NUMBER(4)
 );
 
+
+DROP TABLE MEMBER;
+
 --insert(remark X)
-INSERT INTO MEMBER_TABLE(id,name,addr,email,AGENUMBER)
+INSERT INTO MEMBER(id,name,addr,email,AGE)
 VALUES('hong123', '홍길동', '서울시 종로구', 'hong123@naver.com',24);
+
+
+INSERT INTO MEMBER(no, id,name,addr,email,AGE)	
+VALUES(member_seq.nextval,'hong123', '홍길동', '서울시 종로구', 'hong123@naver.com',24);
+
+INSERT INTO MEMBER(no, id,name,addr,email,AGE)
+VALUES(member_seq.nextval,'hong124', '홍길동', '서울시 종로구', 'hong123@naver.com',24);
+
+INSERT INTO MEMBER(no, id,name,addr,email,AGE)
+VALUES(member_seq.nextval,'hong125', '홍길동', '서울시 종로구', 'hong123@naver.com',24);
+
+INSERT INTO MEMBER(no, id,name,addr,email,AGE)
+VALUES(member_seq.nextval,'hong126', '홍길동', '서울시 종로구', 'hong123@naver.com',24);
+
+INSERT INTO MEMBER(no, id,name,addr,email,AGE)
+VALUES(member_seq.nextval,'hong127', '홍길동', '서울시 종로구', 'hong123@naver.com',24);
+
 
 --member 테이블 열추가
 --bigo 열 추가(문자열,20)
-ALTER TABLE MEMBER_TABLE ADD bigo VARCHAR2(20);
+ALTER TABLE MEMBER ADD bigo VARCHAR2(20);
 
 --bigo 열 크기를 30으로 변경
-ALTER TABLE MEMBER_TABLE MODIFY bigo varchar2(30);
+ALTER TABLE MEMBER MODIFY bigo varchar2(30);
 
 --bigo 열 이름을 remark로 변경
-ALTER TABLE MEMBER_TABLE RENAME COLUMN BIGO TO REMARK;
+ALTER TABLE MEMBER RENAME COLUMN BIGO TO REMARK;
 
 --오라클 객체 
 --오라클 데이터베이스 테이블
@@ -1045,6 +1066,13 @@ CREATE SEQUENCE member_seq;
 INSERT INTO MEMBER_TABLE(no,id,name,addr,email,AGE)
 VALUES(member_seq.nextval, 'hong123', '홍길동', '서울시 종로구', 'hong123@naver.com',24);
 
+-- id : pk(not null + unique) : 행 하나만 나옴
+SELECT * FROM MEMBER WHERE id = 'hong123';
+
+SELECT * FROM MEMBER;
+
+SELECT * FROM MEMBER WHERE NAME like '&홍&';
+
 -- 시퀀스.currval : 가장 마지막으로 생성된 시퀀스 확인
 -- 시퀀스.nextval : 시퀀스 발행
 SELECT member_seq.currval
@@ -1082,7 +1110,7 @@ DROP SEQUENCE seq_dept_sequence;
 -- 1) NOT NULL : 빈 값을 허용하지 않음
 -- 2) UNIQUE : 중복 불가
 -- 3) PRIMARY KEY(PK) : 유일하게 하나만 존재
--- 4) FOREIGN KEY(PK) : 다른테이블과 관계 맺기
+-- 4) FOREIGN KEY(FK) : 다른테이블과 관계 맺기
 -- 5) CHECK : 데이터 형태와 범위를 지정
 -- 6) DEFAULT : 기본값 설정
 
