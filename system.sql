@@ -20,3 +20,35 @@ SELECT * FROM dba_users WHERE username='SCOTT';
 
 -- scott view 생성 권한 부여 
 GRANT CREATE VIEW TO scott;
+
+
+-- 1. 사용자 생성
+ CREATE USER c##java IDENTIFIED BY 12345
+ DEFAULT TABLESPACE USERS
+ TEMPORARY TABLESPACE TEMP
+ QUOTA 10M ON USERS;
+
+-- 2. 권한 부여(GRANT)
+
+-- BOARD 테이블의 SELECT,INSERT,DELETE 권한 부여
+-- GRANT SELECT,INSERT,DELETE ON BOARD TO c##test1;
+-- 롤 : 여러 개의 권한이 묶여서 정의되어 있음
+
+GRANT CONNECT,RESOURCE TO c##java;
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
